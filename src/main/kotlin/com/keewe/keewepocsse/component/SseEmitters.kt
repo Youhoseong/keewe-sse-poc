@@ -9,6 +9,11 @@ class SseEmitters(
 ) {
 
     fun addEmitter(emitter: SseEmitter) {
+        configureInitialEmitter(emitter)
+        emitters.add(emitter)
+    }
+
+    private fun configureInitialEmitter(emitter: SseEmitter) {
         emitter.onCompletion {
             emitters.remove(emitter)
         }
@@ -16,7 +21,5 @@ class SseEmitters(
         emitter.onTimeout {
             emitter.complete()
         }
-
-        emitters.add(emitter)
     }
 }
