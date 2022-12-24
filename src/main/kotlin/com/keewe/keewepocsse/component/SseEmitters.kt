@@ -6,17 +6,17 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class SseEmitters(
-    private var emittersMap: ConcurrentHashMap<String, SseEmitter> = ConcurrentHashMap()
+    private var userConnectionMap: ConcurrentHashMap<String, SseEmitter>
 ) {
 
         fun addEmitter(userId: String, emitter: SseEmitter) {
             configureInitialEmitter(userId, emitter)
-            emittersMap.put(userId, emitter)
+            userConnectionMap.put(userId, emitter)
         }
 
         private fun configureInitialEmitter(userId: String, emitter: SseEmitter) {
             emitter.onCompletion {
-                emittersMap.remove(userId)
+                userConnectionMap.remove(userId)
             }
 
             emitter.onTimeout {

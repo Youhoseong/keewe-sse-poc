@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 
 @RestController
-class ConnectionController(
+class ConnectionController (
     private var dummyService: DummyService
 ) {
-
         @GetMapping("/{userId}")
         fun createNewConnection(@PathVariable userId: String): SseEmitter {
             return dummyService.makeConnection(userId)
         }
-
 }
