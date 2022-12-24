@@ -12,9 +12,9 @@ class ConnectionController(
     private var dummyService: DummyService
 ) {
 
-    @GetMapping("/{param}")
-    fun createNewConnection(@PathVariable param: String): SseEmitter {
-        return dummyService.makeConnection(param)
-    }
+        @GetMapping("/{userId}")
+        fun createNewConnection(@PathVariable userId: String): SseEmitter {
+            return dummyService.makeConnection(userId)
+        }
 
 }

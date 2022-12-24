@@ -2,24 +2,25 @@ package com.keewe.keewepocsse.component
 
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
+import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class SseEmitters(
-    private var emitters: MutableList<SseEmitter> = mutableListOf()
+    private var emittersMap: ConcurrentHashMap<String, SseEmitter> = ConcurrentHashMap()
 ) {
 
-    fun addEmitter(emitter: SseEmitter) {
-        configureInitialEmitter(emitter)
-        emitters.add(emitter)
-    }
-
-    private fun configureInitialEmitter(emitter: SseEmitter) {
-        emitter.onCompletion {
-            emitters.remove(emitter)
+        fun addEmitter(userId: String, emitter: SseEmitter) {
+            configureInitialEmitter(userId, emitter)
+            emittersMap.put(userId, emitter)
         }
 
-        emitter.onTimeout {
-            emitter.complete()
+        private fun configureInitialEmitter(userId: String, emitter: SseEmitter) {
+            emitter.onCompletion {
+                emittersMap.remove(userId)
+            }
+
+            emitter.onTimeout {
+                emitter.complete()
+            }
         }
-    }
 }

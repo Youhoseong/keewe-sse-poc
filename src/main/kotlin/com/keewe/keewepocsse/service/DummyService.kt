@@ -8,10 +8,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 class DummyService(
     private var sseEmitters: SseEmitters
 ){
-    fun makeConnection(eventName: String): SseEmitter {
-        val sseEmitter = SseEmitter()
-        sseEmitters.addEmitter(sseEmitter);
-        sseEmitter.send(SseEmitter.event().name(eventName).data("I'm alive !!"))
-        return sseEmitter
-    }
+
+        fun makeConnection(userId: String): SseEmitter {
+            val sseEmitter = SseEmitter()
+            sseEmitters.addEmitter(userId, sseEmitter)
+            sseEmitter.send(SseEmitter.event().name(userId).data("I'm alive !!"))
+            return sseEmitter
+        }
 }
