@@ -17,5 +17,8 @@ class TitleEventListener(
     fun pushTitleAcquireToUser(message: Message) {
         val userId: String? = "KW00000000001"
         val sseEmitter = userConnectionMap[userId] ?: return
+
+        println("Connection exist with ${userId}")
+        sseEmitter.send("You got title")
     }
 }
